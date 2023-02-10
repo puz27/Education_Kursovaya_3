@@ -25,23 +25,22 @@ data = load_data("operations.json")
 
 
 def get_all_transactions(transactions: list, transaction_type: str) -> list:
-    all_executed_transactions = []
+    needed_transactions = []
 
     for transaction in transactions:
         if get_transaction_type(transaction, transaction_type) is True:
-            all_executed_transactions.append(transaction)
-    return all_executed_transactions
+            needed_transactions.append(transaction)
+    return needed_transactions
 
 
 sorted_needed_transactions = (get_all_transactions(data, "EXECUTED"))
 
 
-
 def get_last_transactions(transactions: list, amount_day: int):
     sorted_transactions = sorted(transactions, key=lambda transaction: transaction["date"], reverse=True)
     return sorted_transactions[0:amount_day]
-
-print(get_last_transactions(sorted_needed_transactions, 5))
+#
+#print(get_last_transactions(sorted_needed_transactions, 5))
 
 card = "MasterCard 7158300734726758"
 account = ("Счет 35383033474447895560".split())[1]
