@@ -1,7 +1,7 @@
 import json
 import os
+import re
 
-test_dict = {'id': 441945886, 'state': 'EXECUTED', 'date': '2019-08-26T10:50:58.294041', 'operationAmount': {'amount': '31957.58', 'currency': {'name': 'руб.', 'code': 'RUB'}}, 'description': 'Перевод организации', 'from': 'Maestro 1596837868705199', 'to': 'Счет 64686473678894779589'}
 
 def load_data(file_name: str) -> list:
     """
@@ -10,35 +10,38 @@ def load_data(file_name: str) -> list:
     :return: list of dictionaries
     """
     path_file = os.path.join(os.getcwd(), "data", file_name)
-
     file = open(path_file, 'r', encoding='utf-8')
     data = json.load(file)
     file.close()
     return data
 
-def check_executed_transaction(transaction: dict) -> bool:
-    if transaction.get("state") == "EXECUTED":
+
+def get_transaction_type(transaction: dict, transaction_type: str) -> bool:
+    if transaction.get("state") == transaction_type:
         return True
     return False
 
 data = load_data("operations.json")
 
 
-def get_all_executed_transactions(transactions: list) -> list:
+def get_all_transactions(transactions: list, transaction_type: str) -> list:
     all_executed_transactions = []
+
     for transaction in transactions:
-        if check_executed_transaction(transaction) is True:
+        if get_transaction_type(transaction, transaction_type) is True:
             all_executed_transactions.append(transaction)
     return all_executed_transactions
 
-data_executed = get_all_executed_transactions(data)
+
+sorted_needed_transactions = (get_all_transactions(data, "EXECUTED"))
 
 
-import re
-# - Номер карты замаскирован и не отображаться целиком,
-# в формате  XXXX XX** **** XXXX (видны первые 6 цифр и последние 4, разбито по блокам по 4 цифры, разделенных пробелом)
-# - Номер счета замаскирован и не отображаться целиком, в формате  **XXXX
-# (видны только последние 4 цифры номера счета)
+
+def get_last_transactions(transactions: list, amount_day: int):
+    sorted_transactions = sorted(transactions, key=lambda transaction: transaction["date"], reverse=True)
+    return sorted_transactions[0:amount_day]
+
+print(get_last_transactions(sorted_needed_transactions, 5))
 
 card = "MasterCard 7158300734726758"
 account = ("Счет 35383033474447895560".split())[1]
@@ -59,10 +62,5 @@ def convert_time(full_time: str) -> str:
     pattern1, pattern2 = r"(^\d{4})-(\d{2})-(\d{2})(T\S+)", r"\3.\2.\1"
     convert_time = re.sub(pattern1, pattern2, full_time)
     return convert_time
-
-
-
-
-
 
 
