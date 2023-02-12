@@ -17,6 +17,12 @@ def load_data(file_name: str) -> list:
 
 
 def get_transaction_type(transaction: dict, transaction_type: str) -> bool:
+    """
+    check status of one transaction
+    :param transaction: dictionary with one clent transaction
+    :param transaction_type: status we need to find
+    :return: True if transaction has status we neeed
+    """
     if transaction.get("state") == transaction_type:
         return True
     return False
@@ -25,8 +31,13 @@ data = load_data("operations.json")
 
 
 def get_all_transactions(transactions: list, transaction_type: str) -> list:
+    """
+    get all transactions with status we need
+    :param transactions: all client transaction
+    :param transaction_type: type of transactions we need
+    :return: all transactions with status we need
+    """
     needed_transactions = []
-
     for transaction in transactions:
         if get_transaction_type(transaction, transaction_type) is True:
             needed_transactions.append(transaction)
@@ -40,26 +51,50 @@ def get_last_transactions(transactions: list, amount_day: int):
     sorted_transactions = sorted(transactions, key=lambda transaction: transaction["date"], reverse=True)
     return sorted_transactions[0:amount_day]
 #
-#print(get_last_transactions(sorted_needed_transactions, 5))
+# print(get_last_transactions(sorted_needed_transactions, 5))
 
-card = "MasterCard 7158300734726758"
+
 account = ("Счет 35383033474447895560".split())[1]
 
-def convert_cart_number(card_info: str) -> tuple:
-    card_name = (card_info.split())[0]
-    card_number = (card_info.split())[1]
+
+def check_account_type(account_description: str) -> bool:
+    if account_description.find("Счет") == 0:
+        return True
+
+
+def convert_cart_number(card_info: str) -> str:
+    card_discription = (card_info.split())[0:-1]
+    card_number = (card_info.split())[-1]
     pattern1, pattern2 = r"(^\d{4})(\d{2})(\d{2})(\d{4})(\d{4})", r"\1 \2** **** \5"
     converted_number = re.sub(pattern1, pattern2, card_number)
-    return card_name, converted_number
+    all_converted_information = " ".join(card_discription), converted_number
+    return " ".join(all_converted_information)
 
 def convert_account_number(account_number: str) -> str:
+
+    only_number = (account_number.split())[-1]
     pattern1, pattern2 = r"(^\d{14})(\d{2})(\d{4})", r"**\3"
-    converted_account = re.sub(pattern1, pattern2, account_number)
+    converted_account = re.sub(pattern1, pattern2, only_number)
     return converted_account
+
+def convert_account_or_card_information(full_transaction: str):
+    if check_account_type(full_transaction) is True:
+        return convert_account_number(full_transaction)
+    else:
+        return convert_cart_number(full_transaction)
+
+
 
 def convert_time(full_time: str) -> str:
     pattern1, pattern2 = r"(^\d{4})-(\d{2})-(\d{2})(T\S+)", r"\3.\2.\1"
     convert_time = re.sub(pattern1, pattern2, full_time)
     return convert_time
 
+def check_transaction_type(transaction: dict) -> bool:
+    if transaction["description"] != "Открытие вклада":
+        return True
+    return False
 
+
+def get_operationAmount(transaction: dict) -> str:
+    return str(transaction["amount"]) + " " + str(transaction["currency"]["name"])
