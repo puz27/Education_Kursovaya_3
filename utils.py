@@ -45,7 +45,7 @@ def get_all_transactions(transactions: list, transaction_type: str) -> list:
 def check_account_type(account_description: str) -> bool:
     """
     use in def convert_account_or_card_information. Check what type of transaction we process
-    if we find "Счет" - it is mean that we work with account (not cards)
+    if we find "Счет" in zero position - it is mean that we work with account (not cards)
     :param account_description: full description of account
     :return:if we find "Счет" - return True, else - return False
     """
@@ -109,7 +109,7 @@ def check_transaction_type(transaction: dict) -> bool:
     """
     check type of transaction
     :param transaction: sorted dictionary
-    :return: if type of transaction is "Открытие вклада" return True, else - return False
+    :return: if type of transaction is "Открытие вклада" return False, else - return True
     """
     if transaction["description"] != "Открытие вклада":
         return True
