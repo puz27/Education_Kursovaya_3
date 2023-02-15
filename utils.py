@@ -126,3 +126,26 @@ def get_operationAmount(transaction: dict) -> str:
     :return: amount and currency type
     """
     return str(transaction["amount"]) + " " + str(transaction["currency"]["name"])
+
+
+def process_transactions(transactions: list) -> print:
+    """
+    process and print clients transactions. it may be "Переводы" or "Открытие вклада"
+    :param transactions: the required number of transactions with the required statuses
+    :return:print needed transactions
+    """
+    # process clients transactions with needed status and counts
+    for transaction in transactions:
+        # check type of transaction
+        if check_transaction_type(transaction) is True:
+            # process transaction: "Переводы"
+            print(convert_time(transaction["date"]),
+                  transaction["description"],
+                  convert_account_or_card_information(transaction["from"]), "-->",
+                  convert_account_or_card_information(transaction["to"]),
+                  get_operationAmount(transaction["operationAmount"]))
+        else:
+            # process transaction: "Открытие вклада"
+            print(convert_time(transaction["date"]),
+                  transaction["description"],
+                  convert_account_or_card_information(transaction["to"]))

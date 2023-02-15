@@ -1,6 +1,7 @@
 from utils import *
 import unittest
-
+from unittest.mock import patch
+import io
 
 class Test(unittest.TestCase):
 
@@ -61,3 +62,17 @@ class Test(unittest.TestCase):
         test_case = {"amount": "25762.92", "currency": {"name": "руб.", "code": "RUB"}}
         expected = "25762.92 руб."
         self.assertEqual(get_operationAmount(test_case), expected)
+
+
+    def test_process_transactions(self):
+        test_case = [{"id": 108066781, "state": "EXECUTED", "date": "2019-06-21T12:34:06.351022",
+                     "operationAmount": {"amount": "25762.92", "currency": {"name": "руб.", "code": "RUB"}},
+                     "description": "Открытие вклада", "to": "Счет 90817634362091276762"}]
+        expected = "21.06.2019 Открытие вклада Счет **6762\n"
+        with unittest.mock.patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+            process_transactions(test_case)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+
+
+
+

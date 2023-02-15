@@ -1,5 +1,6 @@
 from utils import *
 
+
 class ClientOperations:
 
 
@@ -21,5 +22,8 @@ class ClientOperations:
 
         sorted_transactions = sorted(self.__needed_transactions, key=lambda transaction: transaction["date"], reverse=True)
         return sorted_transactions[0:amount_day]
+
+
+
 
 
