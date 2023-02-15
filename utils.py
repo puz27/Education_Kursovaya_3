@@ -45,11 +45,11 @@ def get_all_transactions(transactions: list, transaction_type: str) -> list:
 def check_account_type(account_description: str) -> bool:
     """
     use in def convert_account_or_card_information. Check what type of transaction we process
-    if we find "Счет" in zero position - it is mean that we work with account (not cards)
+    if we find "Счет" - it is mean that we work with account (not cards)
     :param account_description: full description of account
     :return:if we find "Счет" - return True, else - return False
     """
-    if account_description.find("Счет") == 0:
+    if "Счет" in account_description:
         return True
     return False
 
@@ -67,6 +67,7 @@ def convert_cart_number(card_info: str) -> str:
     all_converted_information = " ".join(card_description), converted_number
     return " ".join(all_converted_information)
 
+
 def convert_account_number(account_info: str) -> str:
     """
     use in def convert_account_or_card_information.Convert account number in needed format
@@ -79,6 +80,7 @@ def convert_account_number(account_info: str) -> str:
     converted_number = re.sub(pattern1, pattern2, account_number)
     all_converted_information = " ".join(account_description), converted_number
     return " ".join(all_converted_information)
+
 
 def convert_account_or_card_information(full_transaction: str) -> str:
     """
@@ -104,6 +106,7 @@ def convert_time(full_time: str) -> str:
     pattern1, pattern2 = r"(^\d{4})-(\d{2})-(\d{2})(T\S+)", r"\3.\2.\1"
     convert_time = re.sub(pattern1, pattern2, full_time)
     return convert_time
+
 
 def check_transaction_type(transaction: dict) -> bool:
     """
