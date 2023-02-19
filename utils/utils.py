@@ -1,7 +1,7 @@
 import json
 import os
 import re
-
+from pathlib import Path
 
 def load_data(file_name: str) -> list:
     """
@@ -9,7 +9,7 @@ def load_data(file_name: str) -> list:
     :param file_name: name of import file
     :return: list of dictionaries
     """
-    path_file = os.path.join(os.getcwd(), "data", file_name)
+    path_file = os.path.join(Path(__file__).parent.parent, "data", file_name)
     file = open(path_file, 'r', encoding='utf-8')
     data = json.load(file)
     file.close()

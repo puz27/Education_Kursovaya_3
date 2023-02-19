@@ -1,5 +1,5 @@
-from classes import ClientOperations
-from utils import *
+from utils.classes import ClientOperations
+from utils.utils import *
 
 
 def main():
