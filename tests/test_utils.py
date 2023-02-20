@@ -20,8 +20,10 @@ def test_get_all_transactions():
 
 
 def test_check_account_type():
-    test_case = "Счет для тестирования"
-    assert(check_account_type(test_case)) is True
+    test_case_1 = "Счет для тестирования"
+    test_case_2 = "Карточный счет"
+    assert(check_account_type(test_case_1)) is True
+    assert (check_account_type(test_case_2)) is False
 
 
 def test_convert_cart_number():

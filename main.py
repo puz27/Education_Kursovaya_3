@@ -10,7 +10,7 @@ def main():
     client_transactions = ClientOperations(data)
 
     # process clients transactions with needed status and counts. and print
-    process_transactions(client_transactions.get_need_transactions("EXECUTED", 5))
+    process_transactions(client_transactions.get_need_transactions("EXECUTED", 2))
 
 
 if __name__ == '__main__':
