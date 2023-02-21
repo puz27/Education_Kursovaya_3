@@ -1,4 +1,4 @@
-from utils.utils import get_transaction_type
+from src.utils import get_transaction_type
 
 
 class ClientOperations:
@@ -20,7 +20,8 @@ class ClientOperations:
             if get_transaction_type(transaction, transaction_status) is True:
                 self.__needed_transactions.append(transaction)
 
-        sorted_transactions = sorted(self.__needed_transactions, key=lambda transaction: transaction["date"], reverse=True)
+        sorted_transactions = sorted(self.__needed_transactions, key=lambda transaction: transaction["date"],
+                                     reverse=True)
         return sorted_transactions[0:amount_day]
 
 

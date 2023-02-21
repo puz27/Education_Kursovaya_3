@@ -3,6 +3,7 @@ import os
 import re
 from pathlib import Path
 
+
 def load_data(file_name: str) -> list:
     """
     load data from local file
@@ -21,7 +22,7 @@ def get_transaction_type(transaction: dict, transaction_type: str) -> bool:
     check status of one transaction
     :param transaction: dictionary with one client transaction
     :param transaction_type: status we need to find
-    :return: True if transaction has status we neeed. False - if not.
+    :return: True if transaction has status we need. False - if not.
     """
     if transaction.get("state") == transaction_type:
         return True
@@ -84,8 +85,8 @@ def convert_account_number(account_info: str) -> str:
 
 def convert_account_or_card_information(full_transaction: str) -> str:
     """
-    convert transaction accounts and cards information. if process account - use def convert_account_number,
-    if process cards - use convert_cart_number
+    convert transaction accounts and cards information. if processing account - use def convert_account_number,
+    if processing cards - use convert_cart_number
     :param full_transaction: cart/account full information
     :return: converted cart/account full information
     """
